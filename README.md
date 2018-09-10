@@ -1,13 +1,15 @@
 # webserver-pwdhash
 example HTTP webserver 
 
-the webserver expects 3 environment variables to be set:
-NUM_WORKERS=1000 
-BUFFER_SIZE=1000 
-MAX_PWD_LENGTH=64 
+environment variables:
 
-run the webserver with the following command: 
-NUM_WORKERS=1000 BUFFER_SIZE=1000 MAX_PWD_LENGTH=64 go run webserver.go
+**HTTP_PORT**: port the web server listens on, default: 8080
+**NUM_WORKERS**: number of workers hashing password, default: 100
+**BUFFER_SIZE**: job channel buffer size, default: 1000 
+**MAX_PWD_LENGTH**: max password length, default: 64
+
+use the following command to run the webserver with the default values:
+go run webserver.go
 
 unit test:
 go test ./...
