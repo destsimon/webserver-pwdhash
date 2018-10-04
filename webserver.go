@@ -13,6 +13,7 @@ import (
 	"time"
 	"log"
 	"os"
+	"sync"
 )
 
 var (
@@ -200,8 +201,14 @@ func (s *server) getStatisticsHandlerFunc(w http.ResponseWriter, r *http.Request
 	fmt.Fprintf(w, string(b))
 }
 
+var once sync.Once
+
 //signals the server to gracefully shut down
 func (s *server) shutdownHandlerFunc(w http.ResponseWriter, r *http.Request) {
-	s.stop <- true
-	w.WriteHeader(http.StatusNoContent)
+	once.Do(func() {
+		s.stop <- true
+		w.WriteHeader(http.StatusNoContent)
+		return
+	})
+	w.WriteHeader(http.StatusBadRequest)
 }
